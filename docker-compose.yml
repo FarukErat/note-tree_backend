@@ -17,7 +17,7 @@ services:
       - "app_cache"
     container_name: app
     ports:
-      - "8080:80"
+      - "8085:80"
     build:
       context: .
       dockerfile: Dockerfile

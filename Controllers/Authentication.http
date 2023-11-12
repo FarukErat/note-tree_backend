@@ -1,4 +1,4 @@
-@uri = http://localhost:8080/api/authentication
+@uri = http://localhost:8085/api/authentication
 
 # @name login
 POST {{uri}}/login HTTP/1.1
