@@ -1,4 +1,8 @@
-@uri = http://localhost:8085/api/authentication
+@localhost = http://localhost:8085
+@server = http://server.farukerat.com
+
+# can switch between localhost and server
+@uri = {{localhost}}/api/authentication
 
 # @name login
 POST {{uri}}/login HTTP/1.1
