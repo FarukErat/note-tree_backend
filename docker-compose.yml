@@ -1,0 +1,57 @@
+# docker-compose up -d
+
+version: '1.0'
+
+networks:
+  dev:
+    driver: bridge
+
+services:
+  workout:
+    image: farukerat/workoutimage:latest
+    depends_on:
+      - "app_db"
+      - "app_cache"
+    links:
+      - "app_db"
+      - "app_cache"
+    container_name: app
+    ports:
+      - "8080:80"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - RedisConnectionString=app_cache:6379,abortConnect=False
+      - PostgreSqlConnectionString=Server=app_db;Port=5432;Database=workout;User Id=postgres;Password=root;
+    env_file:
+      - .env
+    networks:
+      - dev
+
+  app_db:
+    image: postgres:latest
+    container_name: db
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=workout
+    ports:
+      - "5432:5432"
+    restart: always
+    volumes:
+      - app_data:/var/lib/postgresql/data
+    networks:
+      - dev
+
+  app_cache:
+    image: redis:latest
+    container_name: cache
+    ports:
+      - "6379:6379"
+    restart: always
+    networks:
+      - dev
+  
+volumes:
+  app_data:

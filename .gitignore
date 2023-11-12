@@ -1,0 +1,71 @@
+# Ignore Visual Studio Code settings
+.vscode/
+tasks.json
+
+# Ignore compiled binaries, debug info, and other build artifacts
+bin/
+obj/
+*.pdb
+*.dll
+*.exe
+
+# Ignore user-specific files
+*.user
+*.suo
+*.userprefs
+*.sln.docstates
+
+# Ignore logs
+logs/
+
+# Ignore database migrations
+Migrations/
+
+# Ignore generated code
+*.Generated.cs
+
+# Ignore .NET Core artifacts
+project.assets.json
+project.nuget.cache
+*.nuget.props
+*.nuget.targets
+
+# Ignore .NET project files
+*.xproj
+*.xuser
+
+# Ignore Visual Studio IntelliSense and CodeLens caches
+*.vscode/
+*.vscode-test/
+.vs2017/
+.vs2019/
+
+# Ignore Rider and ReSharper settings
+.idea/
+*.sln.iml
+*.DotSettings.user
+
+# Ignore build folders for certain tools
+_ReSharper*/
+*.[Rr]e[Ss]harper
+[Tt]humbs.db
+[Tt]est[Rr]esult*
+[Nn]ode[Tt]est[Rr]esult*
+*.snap
+*.vscode-test/
+
+# Ignore packages folder
+packages/
+
+# Ignore npm configuration files
+npm-debug.log*
+
+# Ignore User Secrets directory in development mode
+app_data/
+
+# Ignore Docker artifacts
+docker-compose.override.yml
+Dockerfile.*
+
+# Ignore secrets file
+.env

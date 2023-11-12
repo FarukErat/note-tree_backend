@@ -1,0 +1,30 @@
+@uri = http://localhost:8080/api/authentication
+
+# @name login
+POST {{uri}}/login HTTP/1.1
+Content-Type: application/json
+Cookie: {{session_id}}
+
+{
+    "username": "Oguzkaan",
+    "password": "kjdn8r7y3ghdy"
+}
+###
+@session_id = {{login.response.headers.Set-Cookie}}
+
+POST {{uri}}/signup HTTP/1.1
+Content-Type: application/json
+
+{
+    "username": "Oguzkaan",
+    "password": "kjdn8r7y3ghdy"
+}
+###
+
+GET {{uri}}/secret HTTP/1.1
+Cookie: {{session_id}}
+###
+
+GET {{uri}}/logout HTTP/1.1
+Cookie: {{session_id}}
+###
