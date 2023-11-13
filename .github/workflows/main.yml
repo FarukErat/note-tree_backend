@@ -1,0 +1,23 @@
+name: Update Docker Container
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update-container:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker
+        uses: docker/setup-docker-action@v2
+
+      - name: Update Docker Compose
+        run: |
+          docker-compose down
+          docker-compose pull
+          docker-compose up -d

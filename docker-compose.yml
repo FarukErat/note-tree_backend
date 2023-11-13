@@ -8,7 +8,7 @@ networks:
 
 services:
   workout:
-    image: farukerat/workoutimage:latest
+    image: farukerat/workout-image:latest
     depends_on:
       - "app_db"
       - "app_cache"

@@ -1,3 +1,5 @@
+# docker build -t farukerat/workout-image:latest
+
 # Build sdk image
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
 WORKDIR /App
