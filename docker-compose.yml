@@ -7,7 +7,7 @@ networks:
     driver: bridge
 
 services:
-  workout:
+  workout-container:
     image: farukerat/workout-image:latest
     depends_on:
       - "app_db"
