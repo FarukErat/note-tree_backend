@@ -37,25 +37,22 @@ public class Startup
             app.UseSwagger();
             app.UseSwaggerUI();
 
-            using var scope = app.Services.CreateScope();
+            using IServiceScope scope = app.Services.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
             context.Database.EnsureCreated();
         }
         else
         {
-            using var scope = app.Services.CreateScope();
+            using IServiceScope scope = app.Services.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
             context.Database.Migrate();
         }
 
-        app.UseMiddleware<ExceptionMiddleware>();
-
+        app.UseExceptionHandler("/error");
+        // app.UseMiddleware<ExceptionMiddleware>();
         // app.UseHttpsRedirection();
-
         app.UseAuthorization();
-
         app.MapControllers();
-
         app.Run();
     }
 }

@@ -18,7 +18,7 @@ public class Redis : ICacheService
         _sessionExpiry = configProvider.SessionExpiry;
     }
 
-    public async Task SaveUserAsync(AppUser user, HttpContext context)
+    public async Task SaveUserAsync(User user, HttpContext context)
     {
         // create session
         Session session = new()

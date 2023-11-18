@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Workout.Models;
 
-public class AppUser
+public class User
 {
     // primary key
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

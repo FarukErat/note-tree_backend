@@ -14,7 +14,7 @@ public class PostgreSql : IDBService
         _workoutContext = workoutContext ?? throw new ArgumentNullException(nameof(workoutContext));
     }
 
-    public async Task CreateUserAsync(AppUser user)
+    public async Task CreateUserAsync(User user)
     {
         if (user == null)
         {
@@ -25,14 +25,14 @@ public class PostgreSql : IDBService
         await _workoutContext.SaveChangesAsync();
     }
 
-    public async Task<AppUser?> FindByUsernameAsync(string username)
+    public async Task<User?> FindByUsernameAsync(string username)
     {
         if (string.IsNullOrWhiteSpace(username))
         {
             throw new ArgumentNullException(nameof(username));
         }
 
-        var user = await _workoutContext.Users
+        User? user = await _workoutContext.Users
             .Include(u => u.Password)
             .FirstOrDefaultAsync(u => u.UserName == username);
 
@@ -46,7 +46,7 @@ public class PostgreSql : IDBService
             throw new ArgumentNullException(nameof(username));
         }
 
-        var user = await _workoutContext.Users.FirstOrDefaultAsync(u => u.UserName == username);
+        User? user = await _workoutContext.Users.FirstOrDefaultAsync(u => u.UserName == username);
 
         if (user != null)
         {

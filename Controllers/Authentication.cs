@@ -1,12 +1,12 @@
+using ErrorOr;
 using Microsoft.AspNetCore.Mvc;
 using Workout.Dtos.Requests;
+using Workout.Dtos.Responses;
 using Workout.Interfaces;
 
 namespace Workout.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
-public class Authentication : ControllerBase
+public class Authentication : ApiController
 {
     private readonly IAuthenticationService _authenticationService;
 
@@ -18,28 +18,44 @@ public class Authentication : ControllerBase
     [HttpPost("signup")]
     public async Task<IActionResult> SignUpAsync([FromBody] SignupRequest request)
     {
-        await _authenticationService.SignUpAsync(request, HttpContext);
-        return Ok(new { message = "User created successfully" });
+        ErrorOr<SignupResponse> signupResult = await _authenticationService.SignUpAsync(request, HttpContext);
+
+        return signupResult.Match(
+            result => Ok(result),
+            errors => Problem(errors)
+        );
     }
 
     [HttpPost("login")]
     public async Task<IActionResult> LoginAsync([FromBody] LoginRequest request)
     {
-        await _authenticationService.LoginAsync(request, HttpContext);
-        return Ok(new { message = "User logged in successfully" });
+        ErrorOr<LoginResponse> loginResult = await _authenticationService.LoginAsync(request, HttpContext);
+
+        return loginResult.Match(
+            result => Ok(result),
+            errors => Problem(errors)
+        );
     }
 
     [HttpGet("logout")]
     public async Task<IActionResult> LogoutAsync()
     {
-        await _authenticationService.LogoutAsync(HttpContext);
-        return Ok(new { message = "User logged out successfully" });
+        ErrorOr<Success> logoutResult = await _authenticationService.LogoutAsync(HttpContext);
+
+        return logoutResult.Match(
+            result => Ok(new { message = "You have been logged out!" }),
+            errors => Problem(errors)
+        );
     }
 
     [HttpGet("secret")]
     public async Task<IActionResult> SecretAsync()
     {
-        await _authenticationService.SecretAsync(HttpContext);
-        return Ok(new { message = "You have accessed the secret page" });
+        ErrorOr<Success> secretResult = await _authenticationService.SecretAsync(HttpContext);
+
+        return secretResult.Match(
+            result => Ok(new { message = "You have access to the secret page!" }),
+            errors => Problem(errors)
+        );
     }
 }

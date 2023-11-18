@@ -1,4 +1,4 @@
-@localhost = http://localhost:8085
+@localhost = http://localhost:5050
 @server = http://server.farukerat.com
 
 # can switch between localhost and server

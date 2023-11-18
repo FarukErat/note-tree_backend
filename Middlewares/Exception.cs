@@ -39,7 +39,7 @@ class ExceptionMiddleware : IMiddleware
                 break;
         }
 
-        var response = context.Response;
+        HttpResponse response = context.Response;
         if (!response.HasStarted)
         {
             response.StatusCode = (int)statusCode;

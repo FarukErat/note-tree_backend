@@ -4,7 +4,7 @@ namespace Workout.Interfaces;
 
 public interface IDBService
 {
-    Task CreateUserAsync(AppUser user);
-    Task<AppUser?> FindByUsernameAsync(string userName);
+    Task CreateUserAsync(User user);
+    Task<User?> FindByUsernameAsync(string userName);
     Task UpdatePasswordAsync(string username, Password password);
 }

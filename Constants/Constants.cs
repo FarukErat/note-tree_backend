@@ -1,15 +1,5 @@
 namespace Workout.Constants;
 
-public static class ErrorMessages
-{
-    public const string NoMatchingHashAlgorithm = "Unsupported hashing algorithm.";
-    public const string UnauthorizedRequest = "Request is not authorized.";
-    public const string UserNotFound = "User not found.";
-    public const string UsernameTaken = "Username taken.";
-    public const string WrongPassword = "Wrong password.";
-    public const string NotLoggedIn = "Not logged in.";
-}
-
 public static class HashAlgorithms
 {
     public const string Argon2id = "argon2id";

@@ -1,6 +1,8 @@
 using System.Net;
+using ErrorOr;
 using Workout.Constants;
 using Workout.Dtos.Requests;
+using Workout.Dtos.Responses;
 using Workout.Errors;
 using Workout.Interfaces;
 using Workout.Models;
@@ -20,18 +22,18 @@ public class AuthenticationService : IAuthenticationService
         _hashAlgorithm = configProvider.HashAlgorithm;
     }
 
-    public async Task SignUpAsync(SignupRequest request, HttpContext httpContext)
+    public async Task<ErrorOr<SignupResponse>> SignUpAsync(SignupRequest request, HttpContext httpContext)
     {
         // look up database for existing user
-        var existingUser = await _DBService.FindByUsernameAsync(request.UserName);
+        User? existingUser = await _DBService.FindByUsernameAsync(request.UserName);
         if (existingUser != null)
         {
-            throw new CustomException(ErrorMessages.UsernameTaken, HttpStatusCode.Conflict);
+            return Authentication.UserNameTaken;
         }
 
         // save new user to database
-        var hasher = HasherFactory.GetHasherByAlgorithm(_hashAlgorithm);
-        var user = new AppUser
+        IPasswordManager hasher = HasherFactory.GetHasherByAlgorithm(_hashAlgorithm);
+        User user = new()
         {
             UserName = request.UserName,
             Password = new Password
@@ -45,23 +47,31 @@ public class AuthenticationService : IAuthenticationService
 
         // save user to cache
         await _cacheService.SaveUserAsync(user, httpContext);
+
+        // return response
+        return new SignupResponse
+        {
+            Id = user.Id!,
+            UserName = user.UserName,
+            Role = user.Role
+        };
     }
 
-    public async Task LoginAsync(LoginRequest request, HttpContext httpContext)
+    public async Task<ErrorOr<LoginResponse>> LoginAsync(LoginRequest request, HttpContext httpContext)
     {
         // look up database for existing user
-        var existingUser = await _DBService.FindByUsernameAsync(request.UserName);
+        User? existingUser = await _DBService.FindByUsernameAsync(request.UserName);
         if (existingUser == null)
         {
-            throw new CustomException(ErrorMessages.UserNotFound, HttpStatusCode.NotFound);
+            return Authentication.UserNotFound;
         }
 
         // verify password
-        var hasher = HasherFactory.GetHasherByAlgorithm(existingUser.Password!.Algorithm);
-        var isPasswordCorrect = hasher.VerifyPassword(request.Password, existingUser.Password.Hash);
+        IPasswordManager hasher = HasherFactory.GetHasherByAlgorithm(existingUser.Password!.Algorithm);
+        bool isPasswordCorrect = hasher.VerifyPassword(request.Password, existingUser.Password.Hash);
         if (!isPasswordCorrect)
         {
-            throw new CustomException(ErrorMessages.WrongPassword, HttpStatusCode.Unauthorized);
+            return Authentication.IncorrectPassword;
         }
 
         // update password hash if algorithm has changed
@@ -75,33 +85,57 @@ public class AuthenticationService : IAuthenticationService
 
         // save user to cache
         await _cacheService.SaveUserAsync(existingUser, httpContext);
+
+        // return response
+        return new LoginResponse
+        {
+            Id = existingUser.Id!,
+            UserName = existingUser.UserName,
+            Role = existingUser.Role
+        };
     }
 
-    public async Task LogoutAsync(HttpContext httpContext)
+    public async Task<ErrorOr<Success>> LogoutAsync(HttpContext httpContext)
     {
         // get session id from cookie
-        var sessionId = httpContext.Request.Cookies[Cookies.SessionId]
-            ?? throw new CustomException(ErrorMessages.NotLoggedIn, HttpStatusCode.Unauthorized);
+        string? sessionId = httpContext.Request.Cookies[Cookies.SessionId];
+
+        if (string.IsNullOrWhiteSpace(sessionId))
+        {
+            return Authentication.NotLoggedIn;
+        }
 
         // delete session from cache
         await _cacheService.DeleteSessionByIdAsync(sessionId);
 
         // delete cookie
         httpContext.Response.Cookies.Delete(Cookies.SessionId);
+
+        return Result.Success;
     }
 
-    public async Task SecretAsync(HttpContext httpContext)
+    public async Task<ErrorOr<Success>> SecretAsync(HttpContext httpContext)
     {
         // get session id from cookie
-        var sessionId = httpContext.Request.Cookies[Cookies.SessionId]
-            ?? throw new CustomException(ErrorMessages.NotLoggedIn, HttpStatusCode.Unauthorized);
+        string? sessionId = httpContext.Request.Cookies[Cookies.SessionId];
+
+        if (string.IsNullOrWhiteSpace(sessionId))
+        {
+            return Authentication.NotLoggedIn;
+        }
 
         // get session from cache
-        var session = await _cacheService.GetSessionByIdAsync(sessionId)
-            ?? throw new CustomException(ErrorMessages.NotLoggedIn, HttpStatusCode.Unauthorized);
+        Session? session = await _cacheService.GetSessionByIdAsync(sessionId);
+
+        if (session == null)
+        {
+            return Authentication.NotLoggedIn;
+        }
 
         // update session last seen
         session.LastSeen = DateTime.UtcNow;
         await _cacheService.UpdateSessionByIdAsync(sessionId, session);
+
+        return Result.Success;
     }
 }

@@ -14,7 +14,7 @@ public class HasherFactory
             case HashAlgorithms.Bcrypt:
                 return new BcryptHasher();
             default:
-                throw new ArgumentException(ErrorMessages.NoMatchingHashAlgorithm, nameof(algorithm));
+                throw new ArgumentException("Unsupported hashing algorithm.", nameof(algorithm));
         }
     }
 }
