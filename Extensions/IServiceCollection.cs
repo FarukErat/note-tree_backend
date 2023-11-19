@@ -1,5 +1,4 @@
 using Workout.Interfaces;
-using Workout.Middlewares;
 using Workout.Services;
 
 namespace Workout.Extensions;
@@ -16,6 +15,5 @@ public static class ServiceExtensions
         // scoped
         services.AddScoped<IAuthenticationService, AuthenticationService>();
         services.AddScoped<IDBService, PostgreSql>();
-        services.AddScoped<ExceptionMiddleware>();
     }
 }

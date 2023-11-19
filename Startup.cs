@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Workout.Data;
 using Workout.Extensions;
-using Workout.Middlewares;
+using Workout.Filters;
 using Workout.Services;
 
 namespace Workout;
@@ -23,7 +23,8 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
         services.RegisterServices();
-        services.AddControllers();
+        services.AddControllers(options =>
+            options.Filters.Add<ExceptionHandlerFilterAttribute>());
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
         services.AddDbContext<AppDbContext>(options =>
@@ -48,8 +49,6 @@ public class Startup
             context.Database.Migrate();
         }
 
-        app.UseExceptionHandler("/error");
-        // app.UseMiddleware<ExceptionMiddleware>();
         // app.UseHttpsRedirection();
         app.UseAuthorization();
         app.MapControllers();
