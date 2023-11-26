@@ -10,7 +10,6 @@ public class ApiController : ControllerBase
 {
     protected IActionResult Problem(List<Error> errors)
     {
-        Serilog.Log.Error("Error: {errors}", errors);
         if (errors.All(e => e.Type == ErrorType.Validation))
         {
             ModelStateDictionary modelStateDictionary = new();

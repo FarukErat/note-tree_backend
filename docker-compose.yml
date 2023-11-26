@@ -49,6 +49,6 @@ services:
     restart: always
     networks:
       - dev
-  
+
 volumes:
   app_data:
