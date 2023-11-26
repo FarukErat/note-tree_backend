@@ -12,9 +12,6 @@ services:
     depends_on:
       - "app_db"
       - "app_cache"
-    links:
-      - "app_db"
-      - "app_cache"
     container_name: app
     ports:
       - "8085:80"
