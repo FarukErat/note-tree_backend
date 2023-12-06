@@ -14,12 +14,14 @@ public class AuthenticationService : IAuthenticationService
     private readonly IDBService _DBService;
     private readonly ICacheService _cacheService;
     private readonly string _hashAlgorithm;
+    private readonly TimeSpan _sessionExpiry;
 
     public AuthenticationService(ConfigProvider configProvider, IDBService DBService, ICacheService cacheService)
     {
         _DBService = DBService;
         _cacheService = cacheService;
         _hashAlgorithm = configProvider.HashAlgorithm;
+        _sessionExpiry = configProvider.SessionExpiry;
     }
 
     public async Task<ErrorOr<SignupResponse>> SignUpAsync(SignupRequest request, HttpContext httpContext)
@@ -45,8 +47,8 @@ public class AuthenticationService : IAuthenticationService
         };
         await _DBService.CreateUserAsync(user);
 
-        // save user to cache
-        await _cacheService.SaveUserAsync(user, httpContext);
+        // save user to cache and set cookie
+        await LogUserIn(user, httpContext);
 
         // return response
         return new SignupResponse
@@ -83,8 +85,8 @@ public class AuthenticationService : IAuthenticationService
             await _DBService.UpdatePasswordAsync(existingUser.UserName, existingUser.Password);
         }
 
-        // save user to cache
-        await _cacheService.SaveUserAsync(existingUser, httpContext);
+        // save user to cache and set cookie
+        await LogUserIn(existingUser, httpContext);
 
         // return response
         return new LoginResponse
@@ -137,5 +139,47 @@ public class AuthenticationService : IAuthenticationService
         await _cacheService.UpdateSessionByIdAsync(sessionId, session);
 
         return Result.Success;
+    }
+
+    private async Task LogUserIn(User user, HttpContext httpContext)
+    {
+        string? sessionId = httpContext.Request.Cookies[Cookies.SessionId];
+        Session? session = null;
+        bool isSessionValid = false;
+
+        if (!string.IsNullOrWhiteSpace(sessionId))
+        {
+            session = await _cacheService.GetSessionByIdAsync(sessionId);
+            if (session != null)
+            {
+                isSessionValid = true;
+            }
+        }
+        if (isSessionValid)
+        {
+            if (session!.UserId != user.Id)
+            {
+                await _cacheService.DeleteSessionByIdAsync(sessionId!);
+            }
+            else
+            {
+                session.LastSeen = DateTime.UtcNow;
+                session.ExpireAt = DateTime.UtcNow.Add(_sessionExpiry);
+                await _cacheService.UpdateSessionByIdAsync(sessionId!, session);
+                return;
+            }
+        }
+
+        // save user to cache
+        sessionId = await _cacheService.SaveUserAsync(user, httpContext);
+
+        // set cookie
+        httpContext.Response.Cookies.Append(Cookies.SessionId, sessionId, new CookieOptions
+        {
+            HttpOnly = true,
+            SameSite = SameSiteMode.Strict,
+            Secure = true,
+            Expires = DateTime.UtcNow.Add(_sessionExpiry)
+        });
     }
 }

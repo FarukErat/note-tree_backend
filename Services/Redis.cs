@@ -18,7 +18,7 @@ public class RedisCacheService : ICacheService
         _sessionExpiry = configProvider.SessionExpiry;
     }
 
-    public async Task SaveUserAsync(User user, HttpContext context)
+    public async Task<string> SaveUserAsync(User user, HttpContext context)
     {
         // create session
         Session session = new()
@@ -40,14 +40,7 @@ public class RedisCacheService : ICacheService
         // save session to redis
         await _database.StringSetAsync(sessionId, sessionJson, _sessionExpiry);
 
-        // set cookie
-        context.Response.Cookies.Append(Cookies.SessionId, sessionId, new CookieOptions
-        {
-            HttpOnly = true,
-            SameSite = SameSiteMode.Strict,
-            Secure = true,
-            Expires = DateTime.UtcNow.Add(_sessionExpiry)
-        });
+        return sessionId;
     }
 
     public async Task<Session?> GetSessionByIdAsync(string sessionId)
@@ -65,7 +58,7 @@ public class RedisCacheService : ICacheService
     public async Task UpdateSessionByIdAsync(string sessionId, Session session)
     {
         string sessionJson = JsonConvert.SerializeObject(session);
-        await _database.StringSetAsync(sessionId, sessionJson, session.ExpireAt - DateTime.UtcNow);
+        await _database.StringSetAsync(sessionId, sessionJson, _sessionExpiry);
     }
 
     public async Task DeleteSessionByIdAsync(string sessionId)
