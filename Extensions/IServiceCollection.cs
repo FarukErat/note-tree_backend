@@ -9,7 +9,7 @@ public static class ServiceExtensions
     {
         // singleton
         services.AddSingleton<ConfigProvider>();
-        services.AddSingleton<ICacheService, Redis>();
+        services.AddSingleton<ICacheService, RedisCacheService>();
         services.AddSingleton<ICipher, Cipher>();
 
         // scoped

@@ -6,12 +6,12 @@ using Workout.Constants;
 
 namespace Workout.Services;
 
-public class Redis : ICacheService
+public class RedisCacheService : ICacheService
 {
     private readonly ConnectionMultiplexer _redisConnection;
     private readonly IDatabase _database;
     private readonly TimeSpan _sessionExpiry;
-    public Redis(ConfigProvider configProvider)
+    public RedisCacheService(ConfigProvider configProvider)
     {
         _redisConnection = ConnectionMultiplexer.Connect(configProvider.RedisConnectionString);
         _database = _redisConnection.GetDatabase();
