@@ -38,11 +38,8 @@ public class AuthenticationService : IAuthenticationService
         User user = new()
         {
             UserName = request.UserName,
-            Password = new Password
-            {
-                Algorithm = _hashAlgorithm,
-                Hash = hasher.HashPassword(request.Password)
-            },
+            PasswordHash = hasher.HashPassword(request.Password),
+            PasswordAlgo = _hashAlgorithm,
             Role = Roles.NewUser
         };
         await _DBService.CreateUserAsync(user);
@@ -69,20 +66,20 @@ public class AuthenticationService : IAuthenticationService
         }
 
         // verify password
-        IPasswordManager hasher = HasherFactory.GetHasherByAlgorithm(existingUser.Password!.Algorithm);
-        bool isPasswordCorrect = hasher.VerifyPassword(request.Password, existingUser.Password.Hash);
+        IPasswordManager hasher = HasherFactory.GetHasherByAlgorithm(existingUser.PasswordAlgo);
+        bool isPasswordCorrect = hasher.VerifyPassword(request.Password, existingUser.PasswordHash);
         if (!isPasswordCorrect)
         {
             return Authentication.IncorrectPassword;
         }
 
         // update password hash if algorithm has changed
-        if (existingUser.Password.Algorithm != _hashAlgorithm)
+        if (existingUser.PasswordAlgo != _hashAlgorithm)
         {
             hasher = HasherFactory.GetHasherByAlgorithm(_hashAlgorithm);
-            existingUser.Password.Hash = hasher.HashPassword(request.Password);
-            existingUser.Password.Algorithm = _hashAlgorithm;
-            await _DBService.UpdatePasswordAsync(existingUser.UserName, existingUser.Password);
+            existingUser.PasswordHash = hasher.HashPassword(request.Password);
+            existingUser.PasswordAlgo = _hashAlgorithm;
+            await _DBService.UpdatePasswordAsync(existingUser.UserName, existingUser.PasswordHash, existingUser.PasswordAlgo);
         }
 
         // save user to cache and set cookie

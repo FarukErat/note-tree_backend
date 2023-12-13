@@ -33,13 +33,12 @@ public class PostgreSql : IDBService
         }
 
         User? user = await _workoutContext.Users
-            .Include(u => u.Password)
             .FirstOrDefaultAsync(u => u.UserName == username);
 
         return user;
     }
 
-    public async Task UpdatePasswordAsync(string username, Password password)
+    public async Task UpdatePasswordAsync(string username, string passwordHash, string passwordAlgo)
     {
         if (string.IsNullOrWhiteSpace(username))
         {
@@ -50,7 +49,8 @@ public class PostgreSql : IDBService
 
         if (user != null)
         {
-            user.Password = password;
+            user.PasswordHash = passwordHash;
+            user.PasswordAlgo = passwordAlgo;
             await _workoutContext.SaveChangesAsync();
         }
     }

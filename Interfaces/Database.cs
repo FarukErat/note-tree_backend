@@ -6,5 +6,5 @@ public interface IDBService
 {
     Task CreateUserAsync(User user);
     Task<User?> FindByUsernameAsync(string userName);
-    Task UpdatePasswordAsync(string username, Password password);
+    Task UpdatePasswordAsync(string username, string passwordHash, string passwordAlgo);
 }

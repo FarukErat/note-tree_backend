@@ -17,16 +17,6 @@ public class User
     // attributes
     public string UserName { get; set; } = string.Empty;
     public string Role { get; set; } = string.Empty;
-    public Password Password { get; set; } = null!;
-}
-
-public class Password
-{
-    // primary key
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public string? Id { get; set; }
-
-    // attributes
-    public string Hash { get; set; } = string.Empty;
-    public string Algorithm { get; set; } = string.Empty;
+    public string PasswordHash { get; set; } = string.Empty;
+    public string PasswordAlgo { get; set; } = string.Empty;
 }
