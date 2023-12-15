@@ -9,10 +9,11 @@ networks:
 services:
   workout-container:
     image: farukerat/workout-image:latest
-    depends_on:
-      - "app_db"
-      - "app_cache"
     container_name: app
+    depends_on:
+      - "user_db"
+      - "note_db"
+      - "app_cache"
     ports:
       - "8085:80"
     build:
@@ -20,24 +21,37 @@ services:
       dockerfile: Dockerfile
     environment:
       - RedisConnectionString=app_cache:6379,abortConnect=False
-      - PostgreSqlConnectionString=Server=app_db;Port=5432;Database=workout;User Id=postgres;Password=root;
+      - PostgreSqlConnectionString=Server=user_db;Port=5432;Database=note_trees;User Id=postgres;Password=root;
+      - MongoDbConnectionString=mongodb://note_db:27017
     env_file:
       - .env
     networks:
       - dev
+    command: ["cmd", "dotnet ef migrations add InitialCreate"]
 
-  app_db:
+  user_db:
     image: postgres:latest
-    container_name: db
+    container_name: user_db
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=root
-      - POSTGRES_DB=workout
+      - POSTGRES_DB=note_trees
     ports:
       - "5432:5432"
     restart: always
     volumes:
       - app_data:/var/lib/postgresql/data
+    networks:
+      - dev
+
+  note_db:
+    image: mongo:latest
+    container_name: note_db
+    ports:
+      - "27017:27017"
+    restart: always
+    volumes:
+      - app_data:/data/db
     networks:
       - dev
 

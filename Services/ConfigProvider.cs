@@ -1,11 +1,13 @@
 using DotNetEnv;
-namespace Workout.Services;
+namespace Workout.Authentication.Services;
 
 public class ConfigProvider
 {
     private readonly IConfiguration _configuration;
     public readonly string RedisConnectionString;
     public readonly string PostgreSqlConnectionString;
+    public readonly string MongoDbConnectionString;
+    public readonly string MongoDbDatabaseName;
     public readonly string HashAlgorithm;
     public readonly string CipherKey;
     public readonly TimeSpan SessionExpiry;
@@ -22,6 +24,13 @@ public class ConfigProvider
         PostgreSqlConnectionString = Env.GetString("PostgreSqlConnectionString")
             ?? _configuration.GetConnectionString("PostgreSQL")
             ?? throw new("ConnectionStrings:PostgreSqlConnectionString");
+
+        MongoDbConnectionString = Env.GetString("MongoDbConnectionString")
+            ?? _configuration.GetConnectionString("MongoDB")
+            ?? throw new("ConnectionStrings:MongoDbConnectionString");
+
+        MongoDbDatabaseName = _configuration["MongoDb:DatabaseName"]
+            ?? throw new("MongoDb:DatabaseName");
 
         HashAlgorithm = _configuration["HashAlgorithm"]
             ?? throw new("HashAlgorithm");

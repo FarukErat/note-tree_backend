@@ -2,11 +2,19 @@
 @container = http://localhost:8085
 @server = http://server.farukerat.com
 
-# can switch between localhost and server
-@uri = {{server}}/api/authentication
+@uri = {{container}}/api
+
+POST {{uri}}/authentication/signup HTTP/1.1
+Content-Type: application/json
+
+{
+    "username": "Oguzkaan",
+    "password": "kjdn8r7y3ghdy"
+}
+###
 
 # @name login
-POST {{uri}}/login HTTP/1.1
+POST {{uri}}/authentication/login HTTP/1.1
 Content-Type: application/json
 Cookie: {{session_id}}
 
@@ -17,19 +25,53 @@ Cookie: {{session_id}}
 ###
 @session_id = {{login.response.headers.Set-Cookie}}
 
-POST {{uri}}/signup HTTP/1.1
+GET {{uri}}/authentication/secret HTTP/1.1
+Cookie: {{session_id}}
+###
+
+GET {{uri}}/authentication/logout HTTP/1.1
+Cookie: {{session_id}}
+###
+
+GET {{uri}}/note/get-notes HTTP/1.1
+Cookie: {{session_id}}
+###
+
+POST {{uri}}/note/save-notes HTTP/1.1
 Content-Type: application/json
-
-{
-    "username": "Oguzkaan",
-    "password": "kjdn8r7y3ghdy"
-}
-###
-
-GET {{uri}}/secret HTTP/1.1
 Cookie: {{session_id}}
-###
 
-GET {{uri}}/logout HTTP/1.1
-Cookie: {{session_id}}
+[
+  {
+    "Content": "note 0",
+    "SubNotes": [
+      {
+        "Content": "note 0.0",
+        "SubNotes": [
+          {
+            "Content": "note 0.0.0",
+            "SubNotes": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "Content": "note 1",
+    "SubNotes": []
+  },
+  {
+    "Content": "note 2",
+    "SubNotes": [
+      {
+        "Content": "note 2.0",
+        "SubNotes": []
+      }
+    ]
+  },
+  {
+    "Content": "note 3",
+    "SubNotes": []
+  }
+]
 ###

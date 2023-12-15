@@ -1,9 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Serilog;
-using Workout.Data;
+using Workout.Authentication.Data;
 using Workout.Extensions;
 using Workout.Filters;
-using Workout.Services;
+using Workout.Authentication.Services;
 
 namespace Workout;
 

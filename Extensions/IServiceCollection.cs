@@ -1,5 +1,6 @@
-using Workout.Interfaces;
-using Workout.Services;
+using Workout.Authentication.Interfaces;
+using Workout.Notes.Interfaces;
+using Workout.Authentication.Services;
 
 namespace Workout.Extensions;
 
@@ -11,9 +12,11 @@ public static class ServiceExtensions
         services.AddSingleton<ConfigProvider>();
         services.AddSingleton<ICacheService, RedisCacheService>();
         services.AddSingleton<ICipher, Cipher>();
+        services.AddSingleton<INoteDataManager, NoteDataManager>();
+        services.AddSingleton<INoteService, NoteService>();
 
         // scoped
         services.AddScoped<IAuthenticationService, AuthenticationService>();
-        services.AddScoped<IDBService, PostgreSql>();
+        services.AddScoped<IUserAuthDataManager, UserAuthDataManager>();
     }
 }

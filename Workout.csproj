@@ -21,6 +21,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="mongodb.bson" Version="2.23.0" />
+    <PackageReference Include="mongodb.driver" Version="2.23.0" />
     <PackageReference Include="Newtonsoft.json" Version="13.0.3" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.11" />
     <PackageReference Include="Redis.OM" Version="0.6.0" />
