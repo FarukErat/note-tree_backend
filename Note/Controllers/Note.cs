@@ -1,9 +1,7 @@
 using ErrorOr;
 using Microsoft.AspNetCore.Mvc;
 using Workout.Controllers;
-using Workout.Authentication.Models;
 using Workout.Notes.Interfaces;
-using Workout.Notes.Dtos.Requests;
 using Workout.Notes.Models;
 using WorkoutProject.Helpers;
 

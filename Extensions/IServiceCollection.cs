@@ -13,9 +13,9 @@ public static class ServiceExtensions
         services.AddSingleton<ICacheService, RedisCacheService>();
         services.AddSingleton<ICipher, Cipher>();
         services.AddSingleton<INoteDataManager, NoteDataManager>();
-        services.AddSingleton<INoteService, NoteService>();
 
         // scoped
+        services.AddScoped<INoteService, NoteService>();
         services.AddScoped<IAuthenticationService, AuthenticationService>();
         services.AddScoped<IUserAuthDataManager, UserAuthDataManager>();
     }

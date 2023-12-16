@@ -39,7 +39,8 @@ public class AuthenticationService : IAuthenticationService
             UserName = request.UserName,
             PasswordHash = hasher.HashPassword(request.Password),
             PasswordAlgo = _hashAlgorithm,
-            Role = Roles.NewUser
+            Role = Roles.NewUser,
+            NoteRecordId = null
         };
         await _userAuthDb.CreateUserAsync(user);
 
@@ -112,6 +113,7 @@ public class AuthenticationService : IAuthenticationService
         return Result.Success;
     }
 
+    // TODO: prevent creating multiple sessions for same user when cookie is not set
     private async Task LogUserIn(User user, HttpContext httpContext)
     {
         string? sessionId = httpContext.Request.Cookies[Cookies.SessionId];

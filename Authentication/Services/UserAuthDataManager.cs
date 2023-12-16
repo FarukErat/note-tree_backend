@@ -38,6 +38,27 @@ public class UserAuthDataManager : IUserAuthDataManager
         return user;
     }
 
+    public async Task SetNoteRecordIdAsync(string userId, string noteRecordId)
+    {
+        if (string.IsNullOrWhiteSpace(userId))
+        {
+            throw new ArgumentNullException(nameof(userId));
+        }
+
+        if (string.IsNullOrWhiteSpace(noteRecordId))
+        {
+            throw new ArgumentNullException(nameof(noteRecordId));
+        }
+
+        User? user = await _workoutContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+        if (user != null)
+        {
+            user.NoteRecordId = noteRecordId;
+            await _workoutContext.SaveChangesAsync();
+        }
+    }
+
     public async Task UpdatePasswordAsync(string username, string passwordHash, string passwordAlgo)
     {
         if (string.IsNullOrWhiteSpace(username))

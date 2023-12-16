@@ -27,11 +27,12 @@ public class RedisCacheService : ICacheService
             Role = user.Role,
             IpAddress = context.Connection.RemoteIpAddress?.ToString() ?? string.Empty,
             UserAgent = context.Request.Headers["User-Agent"].ToString(),
+            NoteRecordId = user.NoteRecordId,
             LastSeen = DateTime.UtcNow,
             CreatedAt = DateTime.UtcNow,
             ExpireAt = DateTime.UtcNow.Add(_sessionExpiry),
         };
-        string sessionId = Guid.NewGuid().ToString();
+        string sessionId = user.Id!;
 
         // serialize session
         string sessionJson = JsonConvert.SerializeObject(session);

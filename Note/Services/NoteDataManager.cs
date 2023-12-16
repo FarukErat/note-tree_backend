@@ -1,6 +1,5 @@
 using MongoDB.Bson;
 using MongoDB.Driver;
-using Workout.Notes.Dtos.Requests;
 using Workout.Notes.Interfaces;
 using Workout.Notes.Models;
 
@@ -8,33 +7,39 @@ namespace Workout.Authentication.Services;
 
 public sealed class NoteDataManager : INoteDataManager
 {
-    private readonly IMongoCollection<UserNote> _userNotes;
+    private readonly IMongoCollection<NoteRecord> _noteRecords;
     public NoteDataManager(ConfigProvider configProvider)
     {
         MongoClient client = new(configProvider.MongoDbConnectionString);
         IMongoDatabase database = client.GetDatabase(configProvider.MongoDbDatabaseName);
-        _userNotes = database.GetCollection<UserNote>("UserNotes");
+        _noteRecords = database.GetCollection<NoteRecord>("UserNotes");
     }
 
-    public async Task<List<Note>> GetNotesOfUser(string userId)
+    public async Task<List<Note>> GetNotesOfUser(string id)
     {
-        UserNote? userNote = await _userNotes.Find(x => x.UserId == userId).FirstOrDefaultAsync();
+        NoteRecord? noteRecord = await _noteRecords.Find(x => x.Id == id).FirstOrDefaultAsync();
 
-        return userNote?.Notes ?? new List<Note>();
+        return noteRecord?.Notes ?? new List<Note>();
     }
 
-    public Task SaveNotesOfUser(SaveNote saveNote)
+    public async Task<string?> SaveNotesOfUser(NoteRecord noteRecord)
     {
-        // delete if exists
-        _userNotes.DeleteOne(x => x.UserId == saveNote.UserId);
+        if (noteRecord.Id == null)
+        {
+            noteRecord.Id = ObjectId.GenerateNewId().ToString();
+        }
+        FilterDefinition<NoteRecord> filter = Builders<NoteRecord>.Filter.Eq(
+            x => x.Id,
+            noteRecord.Id);
+        UpdateDefinition<NoteRecord> update = Builders<NoteRecord>.Update.Set(
+                x => x.Notes,
+                noteRecord.Notes);
 
-        // insert new
-        return _userNotes.InsertOneAsync(
-            new UserNote
-            {
-                Id = ObjectId.GenerateNewId().ToString(),
-                UserId = saveNote.UserId,
-                Notes = saveNote.Notes
-            });
+        await _noteRecords.UpdateOneAsync(filter, update, new UpdateOptions
+        {
+            IsUpsert = true
+        });
+
+        return noteRecord.Id;
     }
 }

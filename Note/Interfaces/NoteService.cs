@@ -1,5 +1,4 @@
 using ErrorOr;
-using Workout.Notes.Dtos.Requests;
 using Workout.Notes.Models;
 
 namespace Workout.Notes.Interfaces;
