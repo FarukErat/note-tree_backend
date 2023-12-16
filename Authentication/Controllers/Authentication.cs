@@ -1,12 +1,12 @@
 using ErrorOr;
 using Microsoft.AspNetCore.Mvc;
-using Workout.Controllers;
-using Workout.Authentication.Dtos.Requests;
-using Workout.Authentication.Dtos.Responses;
-using Workout.Authentication.Interfaces;
-using WorkoutProject.Helpers;
+using NoteTree.Controllers;
+using NoteTree.Authentication.Dtos.Requests;
+using NoteTree.Authentication.Dtos.Responses;
+using NoteTree.Authentication.Interfaces;
+using NoteTree.Helpers;
 
-namespace Workout.Authentication.Controllers;
+namespace NoteTree.Authentication.Controllers;
 
 public class Authentication : ApiController
 {

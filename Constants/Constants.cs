@@ -1,4 +1,4 @@
-namespace Workout.Constants;
+namespace NoteTree.Constants;
 
 public static class HashAlgorithms
 {

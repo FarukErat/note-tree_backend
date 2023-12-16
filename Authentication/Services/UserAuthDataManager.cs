@@ -1,17 +1,17 @@
-using Workout.Authentication.Data;
+using NoteTree.Authentication.Data;
 using Microsoft.EntityFrameworkCore;
-using Workout.Authentication.Interfaces;
-using Workout.Authentication.Models;
+using NoteTree.Authentication.Interfaces;
+using NoteTree.Authentication.Models;
 
-namespace Workout.Authentication.Services;
+namespace NoteTree.Authentication.Services;
 
 public class UserAuthDataManager : IUserAuthDataManager
 {
-    private readonly AppDbContext _workoutContext;
+    private readonly AppDbContext _noteTreeContext;
 
-    public UserAuthDataManager(AppDbContext workoutContext)
+    public UserAuthDataManager(AppDbContext noteTreeContext)
     {
-        _workoutContext = workoutContext ?? throw new ArgumentNullException(nameof(workoutContext));
+        _noteTreeContext = noteTreeContext ?? throw new ArgumentNullException(nameof(noteTreeContext));
     }
 
     public async Task CreateUserAsync(User user)
@@ -21,8 +21,8 @@ public class UserAuthDataManager : IUserAuthDataManager
             throw new ArgumentNullException(nameof(user));
         }
 
-        await _workoutContext.Users.AddAsync(user);
-        await _workoutContext.SaveChangesAsync();
+        await _noteTreeContext.Users.AddAsync(user);
+        await _noteTreeContext.SaveChangesAsync();
     }
 
     public async Task<User?> FindByUsernameAsync(string username)
@@ -32,7 +32,7 @@ public class UserAuthDataManager : IUserAuthDataManager
             throw new ArgumentNullException(nameof(username));
         }
 
-        User? user = await _workoutContext.Users
+        User? user = await _noteTreeContext.Users
             .FirstOrDefaultAsync(u => u.UserName == username);
 
         return user;
@@ -50,12 +50,12 @@ public class UserAuthDataManager : IUserAuthDataManager
             throw new ArgumentNullException(nameof(noteRecordId));
         }
 
-        User? user = await _workoutContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
+        User? user = await _noteTreeContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
         if (user != null)
         {
             user.NoteRecordId = noteRecordId;
-            await _workoutContext.SaveChangesAsync();
+            await _noteTreeContext.SaveChangesAsync();
         }
     }
 
@@ -66,13 +66,13 @@ public class UserAuthDataManager : IUserAuthDataManager
             throw new ArgumentNullException(nameof(username));
         }
 
-        User? user = await _workoutContext.Users.FirstOrDefaultAsync(u => u.UserName == username);
+        User? user = await _noteTreeContext.Users.FirstOrDefaultAsync(u => u.UserName == username);
 
         if (user != null)
         {
             user.PasswordHash = passwordHash;
             user.PasswordAlgo = passwordAlgo;
-            await _workoutContext.SaveChangesAsync();
+            await _noteTreeContext.SaveChangesAsync();
         }
     }
 }

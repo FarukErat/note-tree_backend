@@ -6,7 +6,7 @@ dotnet ef migrations remove
 
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Workout.Authentication.Models;
+namespace NoteTree.Authentication.Models;
 
 public class User
 {

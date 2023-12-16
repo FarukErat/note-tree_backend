@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Workout.Authentication.Dtos.Requests;
+namespace NoteTree.Authentication.Dtos.Requests;
 
 public class LoginRequest
 {

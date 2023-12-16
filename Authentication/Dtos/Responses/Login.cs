@@ -1,4 +1,4 @@
-namespace Workout.Authentication.Dtos.Responses;
+namespace NoteTree.Authentication.Dtos.Responses;
 
 public class LoginResponse
 {

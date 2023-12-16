@@ -1,8 +1,8 @@
-using Workout.Authentication.Interfaces;
-using Workout.Notes.Interfaces;
-using Workout.Authentication.Services;
+using NoteTree.Authentication.Interfaces;
+using NoteTree.Notes.Interfaces;
+using NoteTree.Authentication.Services;
 
-namespace Workout.Extensions;
+namespace NoteTree.Extensions;
 
 public static class ServiceExtensions
 {

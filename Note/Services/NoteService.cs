@@ -1,10 +1,10 @@
 using ErrorOr;
-using Workout.Authentication.Models;
-using Workout.Authentication.Interfaces;
-using Workout.Notes.Interfaces;
-using Workout.Notes.Models;
+using NoteTree.Authentication.Models;
+using NoteTree.Authentication.Interfaces;
+using NoteTree.Notes.Interfaces;
+using NoteTree.Notes.Models;
 
-namespace Workout.Authentication.Services;
+namespace NoteTree.Authentication.Services;
 
 public sealed class NoteService : INoteService
 {
@@ -50,7 +50,7 @@ public sealed class NoteService : INoteService
         Session? session = (Session?)httpContext.Items["Session"];
         if (session?.NoteRecordId == null)
         {
-            return Notes.Errors.Notes.NoSavedNote;
+            return new List<Note>();
         }
         return await _noteDb.GetNotesOfUser(session.NoteRecordId);
     }

@@ -1,6 +1,6 @@
-using Workout.Authentication.Interfaces;
+using NoteTree.Authentication.Interfaces;
 
-namespace Workout.Authentication.Services;
+namespace NoteTree.Authentication.Services;
 
 public class BcryptHasher : IPasswordManager
 {

@@ -1,4 +1,4 @@
-namespace Workout.Notes.Models;
+namespace NoteTree.Notes.Models;
 
 public sealed class Note
 {

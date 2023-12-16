@@ -1,9 +1,9 @@
 using MongoDB.Bson;
 using MongoDB.Driver;
-using Workout.Notes.Interfaces;
-using Workout.Notes.Models;
+using NoteTree.Notes.Interfaces;
+using NoteTree.Notes.Models;
 
-namespace Workout.Authentication.Services;
+namespace NoteTree.Authentication.Services;
 
 public sealed class NoteDataManager : INoteDataManager
 {

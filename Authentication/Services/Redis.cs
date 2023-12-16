@@ -1,9 +1,9 @@
 using StackExchange.Redis;
 using Newtonsoft.Json;
-using Workout.Authentication.Interfaces;
-using Workout.Authentication.Models;
+using NoteTree.Authentication.Interfaces;
+using NoteTree.Authentication.Models;
 
-namespace Workout.Authentication.Services;
+namespace NoteTree.Authentication.Services;
 
 public class RedisCacheService : ICacheService
 {

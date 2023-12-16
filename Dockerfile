@@ -1,4 +1,4 @@
-# docker build -t farukerat/workout-image:latest
+# docker build -t farukerat/NoteTree-image:latest
 
 # Build sdk image
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
@@ -18,4 +18,4 @@ RUN dotnet publish -c Release -o out
 FROM mcr.microsoft.com/dotnet/aspnet:7.0
 WORKDIR /App
 COPY --from=build-env /App/out .
-ENTRYPOINT ["dotnet", "Workout.dll"]
+ENTRYPOINT ["dotnet", "NoteTree.dll"]

@@ -1,11 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Serilog;
-using Workout.Authentication.Data;
-using Workout.Extensions;
-using Workout.Filters;
-using Workout.Authentication.Services;
+using NoteTree.Authentication.Data;
+using NoteTree.Extensions;
+using NoteTree.Filters;
+using NoteTree.Authentication.Services;
 
-namespace Workout;
+namespace NoteTree;
 
 public class Startup
 {

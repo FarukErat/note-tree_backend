@@ -1,7 +1,7 @@
-using Workout.Constants;
-using Workout.Authentication.Interfaces;
+using NoteTree.Constants;
+using NoteTree.Authentication.Interfaces;
 
-namespace Workout.Authentication.Services;
+namespace NoteTree.Authentication.Services;
 
 public class HasherFactory
 {

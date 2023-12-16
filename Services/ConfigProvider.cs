@@ -1,5 +1,5 @@
 using DotNetEnv;
-namespace Workout.Authentication.Services;
+namespace NoteTree.Authentication.Services;
 
 public class ConfigProvider
 {

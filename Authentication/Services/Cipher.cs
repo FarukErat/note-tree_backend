@@ -1,8 +1,8 @@
 using System.Security.Cryptography;
 using System.Text;
-using Workout.Authentication.Interfaces;
+using NoteTree.Authentication.Interfaces;
 
-namespace Workout.Authentication.Services;
+namespace NoteTree.Authentication.Services;
 
 public class Cipher : ICipher
 {

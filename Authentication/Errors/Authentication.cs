@@ -1,6 +1,6 @@
 using ErrorOr;
 
-namespace Workout.Authentication.Errors;
+namespace NoteTree.Authentication.Errors;
 
 public static class Authentication
 {

@@ -4,10 +4,10 @@ dotnet ef database update
 dotnet ef migrations remove
 */
 
-using Workout.Authentication.Models;
+using NoteTree.Authentication.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Workout.Authentication.Data;
+namespace NoteTree.Authentication.Data;
 
 public class AppDbContext : DbContext
 {

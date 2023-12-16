@@ -1,4 +1,4 @@
-namespace Workout.Authentication.Interfaces;
+namespace NoteTree.Authentication.Interfaces;
 
 public interface ICipher
 {

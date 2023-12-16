@@ -2,7 +2,7 @@ using ErrorOr;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace Workout.Controllers;
+namespace NoteTree.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]

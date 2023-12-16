@@ -1,4 +1,4 @@
-namespace Workout.Authentication.Models;
+namespace NoteTree.Authentication.Models;
 
 public class Session
 {

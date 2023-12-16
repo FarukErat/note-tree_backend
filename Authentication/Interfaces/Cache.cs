@@ -1,6 +1,6 @@
-using Workout.Authentication.Models;
+using NoteTree.Authentication.Models;
 
-namespace Workout.Authentication.Interfaces;
+namespace NoteTree.Authentication.Interfaces;
 
 public interface ICacheService
 {

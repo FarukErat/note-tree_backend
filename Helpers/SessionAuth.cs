@@ -2,11 +2,11 @@ using System.Net;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Workout.Authentication.Interfaces;
-using Workout.Authentication.Models;
-using Workout.Constants;
+using NoteTree.Authentication.Interfaces;
+using NoteTree.Authentication.Models;
+using NoteTree.Constants;
 
-namespace WorkoutProject.Helpers;
+namespace NoteTree.Helpers;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
 public class SessionAuthAttribute : TypeFilterAttribute

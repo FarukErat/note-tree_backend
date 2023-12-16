@@ -7,8 +7,8 @@ networks:
     driver: bridge
 
 services:
-  workout-container:
-    image: farukerat/workout-image:latest
+  NoteTree-container:
+    image: farukerat/note_tree-image:latest
     container_name: app
     depends_on:
       - "user_db"

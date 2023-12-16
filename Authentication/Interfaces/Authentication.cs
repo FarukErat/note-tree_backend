@@ -1,9 +1,9 @@
 using ErrorOr;
-using Workout.Authentication.Dtos.Requests;
-using Workout.Authentication.Dtos.Responses;
-using Workout.Authentication.Models;
+using NoteTree.Authentication.Dtos.Requests;
+using NoteTree.Authentication.Dtos.Responses;
+using NoteTree.Authentication.Models;
 
-namespace Workout.Authentication.Interfaces;
+namespace NoteTree.Authentication.Interfaces;
 
 public interface IAuthenticationService
 {

@@ -1,12 +1,12 @@
 using ErrorOr;
-using Workout.Constants;
-using Workout.Authentication.Dtos.Requests;
-using Workout.Authentication.Dtos.Responses;
-using Workout.Authentication.Errors;
-using Workout.Authentication.Interfaces;
-using Workout.Authentication.Models;
+using NoteTree.Constants;
+using NoteTree.Authentication.Dtos.Requests;
+using NoteTree.Authentication.Dtos.Responses;
+using NoteTree.Authentication.Errors;
+using NoteTree.Authentication.Interfaces;
+using NoteTree.Authentication.Models;
 
-namespace Workout.Authentication.Services;
+namespace NoteTree.Authentication.Services;
 
 public class AuthenticationService : IAuthenticationService
 {

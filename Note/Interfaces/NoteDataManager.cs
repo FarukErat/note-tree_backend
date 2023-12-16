@@ -1,6 +1,6 @@
-using Workout.Notes.Models;
+using NoteTree.Notes.Models;
 
-namespace Workout.Notes.Interfaces;
+namespace NoteTree.Notes.Interfaces;
 
 public interface INoteDataManager
 {

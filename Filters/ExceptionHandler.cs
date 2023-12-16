@@ -2,7 +2,7 @@ using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace Workout.Filters;
+namespace NoteTree.Filters;
 
 public class ExceptionHandlerFilterAttribute : ExceptionFilterAttribute
 {

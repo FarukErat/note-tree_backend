@@ -1,9 +1,9 @@
 using Konscious.Security.Cryptography;
 using System.Security.Cryptography;
 using System.Text;
-using Workout.Authentication.Interfaces;
+using NoteTree.Authentication.Interfaces;
 
-namespace Workout.Authentication.Services;
+namespace NoteTree.Authentication.Services;
 
 public class Argon2idHasher : IPasswordManager
 {

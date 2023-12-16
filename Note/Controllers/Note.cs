@@ -1,11 +1,11 @@
 using ErrorOr;
 using Microsoft.AspNetCore.Mvc;
-using Workout.Controllers;
-using Workout.Notes.Interfaces;
-using Workout.Notes.Models;
-using WorkoutProject.Helpers;
+using NoteTree.Controllers;
+using NoteTree.Notes.Interfaces;
+using NoteTree.Notes.Models;
+using NoteTree.Helpers;
 
-namespace Workout.Notes.Controllers;
+namespace NoteTree.Notes.Controllers;
 
 [SessionAuth]
 public class NoteController : ApiController
