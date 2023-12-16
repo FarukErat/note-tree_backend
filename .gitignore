@@ -1,3 +1,6 @@
+# Ignore secrets file
+.env
+
 # Ignore Visual Studio Code settings
 .vscode/
 tasks.json
@@ -18,8 +21,9 @@ obj/
 # Ignore logs
 logs/
 
+# TODO: uncomment when docker container can run without this
 # Ignore database migrations
-Migrations/
+# Migrations/
 
 # Ignore generated code
 *.Generated.cs
@@ -66,6 +70,3 @@ app_data/
 # Ignore Docker artifacts
 docker-compose.override.yml
 Dockerfile.*
-
-# Ignore secrets file
-.env
