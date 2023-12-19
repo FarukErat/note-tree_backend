@@ -2,6 +2,8 @@ using StackExchange.Redis;
 using Newtonsoft.Json;
 using NoteTree.Authentication.Interfaces;
 using NoteTree.Authentication.Models;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace NoteTree.Authentication.Services;
 
@@ -10,11 +12,13 @@ public class RedisCacheService : ICacheService
     private readonly ConnectionMultiplexer _redisConnection;
     private readonly IDatabase _database;
     private readonly TimeSpan _sessionExpiry;
+    private readonly string _sessionSalt;
     public RedisCacheService(ConfigProvider configProvider)
     {
         _redisConnection = ConnectionMultiplexer.Connect(configProvider.RedisConnectionString);
         _database = _redisConnection.GetDatabase();
         _sessionExpiry = configProvider.SessionExpiry;
+        _sessionSalt = configProvider.CipherKey;
     }
 
     public async Task<string> SaveUserAsync(User user, HttpContext context)
@@ -32,7 +36,11 @@ public class RedisCacheService : ICacheService
             CreatedAt = DateTime.UtcNow,
             ExpireAt = DateTime.UtcNow.Add(_sessionExpiry),
         };
-        string sessionId = user.Id!;
+
+        string sessionId = Convert.ToBase64String(
+            SHA256.HashData(Encoding.UTF8.GetBytes(
+                session.UserId + session.UserAgent + _sessionSalt)))
+                .Replace('+', '-').Replace('/', '_').Replace("=", "");
 
         // serialize session
         string sessionJson = JsonConvert.SerializeObject(session);
