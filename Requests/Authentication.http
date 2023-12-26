@@ -2,7 +2,7 @@
 @container = http://localhost:8085
 @server = http://server.farukerat.com
 
-@uri = {{localhost}}/api
+@uri = {{container}}/api
 
 POST {{uri}}/authentication/signup HTTP/1.1
 Content-Type: application/json
@@ -19,7 +19,7 @@ Content-Type: application/json
 Cookie: {{session_id}}
 
 {
-    "username": "Oguzkaanf",
+    "username": "Oguzkafanf",
     "password": "kjdn8r7y3ghdy"
 }
 ###

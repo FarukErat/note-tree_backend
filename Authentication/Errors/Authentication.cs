@@ -14,7 +14,7 @@ public static class Authentication
         description: "No user was found with the given username."
     );
 
-    public static Error IncorrectPassword => Error.Validation(
+    public static Error IncorrectPassword => Error.Unauthorized(
         code: "Authentication.IncorrectPassword",
         description: "The password is incorrect."
     );
