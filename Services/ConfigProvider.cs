@@ -17,15 +17,15 @@ public class ConfigProvider
         _configuration = configuration;
         Env.Load();
 
-        RedisConnectionString = Env.GetString("RedisConnectionString")
+        RedisConnectionString = Environment.GetEnvironmentVariable("RedisConnectionString")
             ?? _configuration.GetConnectionString("Redis")
             ?? throw new("ConnectionStrings:RedisConnectionString");
 
-        PostgreSqlConnectionString = Env.GetString("PostgreSqlConnectionString")
+        PostgreSqlConnectionString = Environment.GetEnvironmentVariable("PostgreSqlConnectionString")
             ?? _configuration.GetConnectionString("PostgreSQL")
             ?? throw new("ConnectionStrings:PostgreSqlConnectionString");
 
-        MongoDbConnectionString = Env.GetString("MongoDbConnectionString")
+        MongoDbConnectionString = Environment.GetEnvironmentVariable("MongoDbConnectionString")
             ?? _configuration.GetConnectionString("MongoDB")
             ?? throw new("ConnectionStrings:MongoDbConnectionString");
 
@@ -38,7 +38,7 @@ public class ConfigProvider
         SessionExpiry = TimeSpan.Parse(_configuration["SessionExpiry"]
             ?? throw new("SessionExpiry"));
 
-        CipherKey = Env.GetString("CIPHER_KEY")
+        CipherKey = Environment.GetEnvironmentVariable("CIPHER_KEY")
             ?? throw new("CIPHER_KEY");
     }
 }
