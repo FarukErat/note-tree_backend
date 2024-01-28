@@ -28,14 +28,14 @@ public sealed class NoteService : INoteService
         }
 
         // save notes to database
-        string? noteRecordId = await _noteDb.SaveNotesOfUser(
+        string noteRecordId = await _noteDb.SaveNotesOfUser(
             new NoteRecord()
             {
                 Id = session.NoteRecordId,
                 Notes = notes
             });
 
-        if (session.NoteRecordId == null && noteRecordId != null)
+        if (session.NoteRecordId == null)
         {
             session.NoteRecordId = noteRecordId;
             await _userAuthDb.SetNoteRecordIdAsync(session.UserId, noteRecordId);

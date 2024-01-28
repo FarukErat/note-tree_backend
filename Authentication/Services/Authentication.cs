@@ -5,6 +5,8 @@ using NoteTree.Authentication.Dtos.Responses;
 using NoteTree.Authentication.Errors;
 using NoteTree.Authentication.Interfaces;
 using NoteTree.Authentication.Models;
+using NoteTree.Notes.Interfaces;
+using NoteTree.Notes.Models;
 
 namespace NoteTree.Authentication.Services;
 
@@ -12,15 +14,17 @@ public class AuthenticationService : IAuthenticationService
 {
     private readonly IUserAuthDataManager _userAuthDb;
     private readonly ICacheService _cacheService;
+    private readonly INoteDataManager _noteDataManager;
     private readonly string _hashAlgorithm;
     private readonly TimeSpan _sessionExpiry;
 
-    public AuthenticationService(ConfigProvider configProvider, IUserAuthDataManager DBService, ICacheService cacheService)
+    public AuthenticationService(ConfigProvider configProvider, IUserAuthDataManager DBService, ICacheService cacheService, INoteDataManager noteDataManager)
     {
         _userAuthDb = DBService;
         _cacheService = cacheService;
         _hashAlgorithm = configProvider.HashAlgorithm;
         _sessionExpiry = configProvider.SessionExpiry;
+        _noteDataManager = noteDataManager;
     }
 
     public async Task<ErrorOr<SignupResponse>> SignUpAsync(SignupRequest request, HttpContext httpContext)
@@ -40,7 +44,7 @@ public class AuthenticationService : IAuthenticationService
             PasswordHash = hasher.HashPassword(request.Password),
             PasswordAlgo = _hashAlgorithm,
             Role = Roles.NewUser,
-            NoteRecordId = null
+            NoteRecordId = await _noteDataManager.SaveNotesOfUser(new NoteRecord() { Notes = new List<Note>() })
         };
         await _userAuthDb.CreateUserAsync(user);
 

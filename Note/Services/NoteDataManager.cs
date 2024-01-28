@@ -22,12 +22,9 @@ public sealed class NoteDataManager : INoteDataManager
         return noteRecord?.Notes ?? new List<Note>();
     }
 
-    public async Task<string?> SaveNotesOfUser(NoteRecord noteRecord)
+    public async Task<string> SaveNotesOfUser(NoteRecord noteRecord)
     {
-        if (noteRecord.Id == null)
-        {
-            noteRecord.Id = ObjectId.GenerateNewId().ToString();
-        }
+        noteRecord.Id ??= ObjectId.GenerateNewId().ToString();
         FilterDefinition<NoteRecord> filter = Builders<NoteRecord>.Filter.Eq(
             x => x.Id,
             noteRecord.Id);
