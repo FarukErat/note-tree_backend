@@ -7,6 +7,7 @@ public class Session
     public string Role { get; set; } = string.Empty;
     public string IpAddress { get; set; } = string.Empty;
     public string UserAgent { get; set; } = string.Empty;
+    public string Guid { get; set; } = string.Empty;
     public string? NoteRecordId { get; set; }
     public DateTime LastSeen { get; set; }
     public DateTime CreatedAt { get; set; }

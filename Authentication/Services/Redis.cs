@@ -31,6 +31,7 @@ public class RedisCacheService : ICacheService
             Role = user.Role,
             IpAddress = context.Connection.RemoteIpAddress?.ToString() ?? string.Empty,
             UserAgent = context.Request.Headers["User-Agent"].ToString(),
+            Guid = Guid.NewGuid().ToString(),
             NoteRecordId = user.NoteRecordId,
             LastSeen = DateTime.UtcNow,
             CreatedAt = DateTime.UtcNow,
@@ -39,7 +40,7 @@ public class RedisCacheService : ICacheService
 
         string sessionId = Convert.ToBase64String(
             SHA256.HashData(Encoding.UTF8.GetBytes(
-                session.UserId + session.UserAgent + _sessionSalt)))
+                session.UserId + session.UserAgent + session.Guid + _sessionSalt)))
                 .Replace('+', '-').Replace('/', '_').Replace("=", "");
 
         // serialize session

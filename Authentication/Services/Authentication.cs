@@ -117,7 +117,7 @@ public class AuthenticationService : IAuthenticationService
     private async Task LogUserIn(User user, HttpContext httpContext)
     {
         string? sessionId = httpContext.Request.Cookies[Cookies.SessionId];
-        Session? session = null;
+        Session? session = null; // to suppress use of unassigned variable warning
         bool isSessionValid = false;
 
         if (!string.IsNullOrWhiteSpace(sessionId))
