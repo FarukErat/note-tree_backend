@@ -1,5 +1,5 @@
 using System.Net;
-using System.Text.Json;
+// using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using NoteTree.Authentication.Interfaces;
@@ -53,5 +53,14 @@ public class SessionAuthFilter : IAsyncAuthorizationFilter
 
         // store session in context
         context.HttpContext.Items["Session"] = session;
+        // context.HttpContext.User = new ClaimsPrincipal(
+        //     new ClaimsIdentity(
+        //         new Claim[] {
+        //             new(ClaimTypes.Name, session.UserId),
+        //             new(ClaimTypes.Role, session.Role),
+        //             new("NoteRecordId", session.NoteRecordId ?? string.Empty)
+        //         }
+        //     )
+        // );
     }
 }
