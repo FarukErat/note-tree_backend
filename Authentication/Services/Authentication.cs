@@ -27,7 +27,7 @@ public class AuthenticationService : IAuthenticationService
         _noteDataManager = noteDataManager;
     }
 
-    public async Task<ErrorOr<SignupResponse>> SignUpAsync(SignupRequest request, HttpContext httpContext)
+    public async Task<ErrorOr<RegisterResponse>> RegisterAsync(RegisterRequest request, HttpContext httpContext)
     {
         // look up database for existing user
         User? existingUser = await _userAuthDb.FindByUsernameAsync(request.UserName);
@@ -52,7 +52,7 @@ public class AuthenticationService : IAuthenticationService
         await LogUserIn(user, httpContext);
 
         // return response
-        return new SignupResponse
+        return new RegisterResponse
         {
             Id = user.Id!,
             UserName = user.UserName,

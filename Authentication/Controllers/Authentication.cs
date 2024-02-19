@@ -17,12 +17,12 @@ public class Authentication : ApiController
         _authenticationService = authenticationService;
     }
 
-    [HttpPost("signup")]
-    public async Task<IActionResult> SignUpAsync([FromBody] SignupRequest request)
+    [HttpPost("register")]
+    public async Task<IActionResult> RegisterAsync([FromBody] RegisterRequest request)
     {
-        ErrorOr<SignupResponse> signupResult = await _authenticationService.SignUpAsync(request, HttpContext);
+        ErrorOr<RegisterResponse> registerResult = await _authenticationService.RegisterAsync(request, HttpContext);
 
-        return signupResult.Match(
+        return registerResult.Match(
             result => Ok(result),
             errors => Problem(errors)
         );

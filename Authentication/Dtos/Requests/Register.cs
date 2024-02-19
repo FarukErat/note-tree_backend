@@ -2,7 +2,7 @@
 
 namespace NoteTree.Authentication.Dtos.Requests;
 
-public class SignupRequest
+public class RegisterRequest
 {
     [Required]
     [MinLength(6), MaxLength(20)]
