@@ -1,4 +1,4 @@
-# docker build -t farukerat/NoteTree-image:latest
+# docker build -t farukerat/NoteTree-image:latest .
 
 # Build sdk image
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
